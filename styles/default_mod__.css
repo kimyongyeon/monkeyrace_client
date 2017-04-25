@@ -1,0 +1,397 @@
+/* �⺻ ���� */
+*{margin:0;padding:0}
+img{border:0;font-size:0;line-height:0;vertical-align:top}
+li{list-style:none}
+a{text-decoration:none}
+fieldset{border:0}
+textarea{resize:none}
+table{border-collapse:collapse;border-spacing:0}
+em{font-style:normal}
+body, p, i, h1, h2, h3, h4, h5, h6, div, ul, ol, li, dl, dt, dd, table, tr, th, td, form, fieldset, legend, input, textarea, button, select {margin: 0;padding: 0;font-family: 'Segoe UI', sans-serif;font-size:100%;box-sizing:border-box;word-break: keep-all;-webkit-text-size-adjust:none}
+
+body {
+	margin:0 auto;
+    background-color: #fff;
+}
+
+/*
+span {
+    font-style: italic;
+}
+*/
+
+#wrap {
+	width:100%;
+	padding:20px 0px;
+}
+
+#gamebox {
+	position:relative;
+	margin: 0 auto;
+	width:830px;
+	height:100%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1), 0 6px 20px 0 rgba(0, 0, 0, 1);
+	background: black;
+
+}
+
+#content {
+	width:830px;
+	height:560px;
+	z-index:1;
+	background: black;
+}
+
+#board {
+	position:relative;
+	width: 830px;
+	height: auto;
+	margin-top:-32px;
+	z-index:99999;
+}
+
+/* TAB CONTAINER */
+#board .tabContainer{position:absolute;left:0;top:-31px;z-index:99;}
+#board .tabContainer .tabs_nav{width:100%;margin-left:10px}
+#board .tabContainer .tabs_nav > li{float:left;margin-right:2px;background:url('_img/btn_common.png') no-repeat -1px -2px;}
+#board .tabContainer .tabs_nav > li:last-child{margin-right:0px;}
+#board .tabContainer .tabs_nav > li a{display:block;width:118px;height:32px;line-height:36px;text-align:center;font-size:12px;color:#8140bf;}
+#board .tabContainer .tabs_nav > li.on{background-position: -125px -1px}
+#board .tabContainer .tabs_nav > li.on a{font-weight:bold;font-size:12px;color:#fff;}
+
+/* SUB TAB CONTAINER */
+#board .bettingControl{position:relative;width:100%;height:auto;margin-top:31px;}
+#board .bettingControl .betControl_win{position:relative;width:830px;height:349px;background:url('_img/bg_betControlBox.png') no-repeat left bottom;}
+#board .bettingControl .betControl_win .subtabs_nav{position:relative;overflow:hidden;width:526px;margin-left:7px;padding:10px 0 0 10px;border-bottom:1px solid #6045ff;}
+#board .bettingControl .betControl_win .subtabs_nav > li{float:left;margin-right:2px;background:url('_img/btn_common.png') no-repeat -1px -43px;}
+#board .bettingControl .betControl_win .subtabs_nav > li:last-child{margin-right:0px;}
+#board .bettingControl .betControl_win .subtabs_nav > li a{display:block;width:100px;height:28px;line-height:28px;text-align:center;font-size:12px;color:#4a60e3;}
+#board .bettingControl .betControl_win .subtabs_nav > li.on{background-position: -125px -43px}
+#board .bettingControl .betControl_win .subtabs_nav > li.on a{font-weight:bold;font-size:12px;color:#f1f7ff;}
+#board .bettingControl .betControl_win .subtabs_nav > li.off{background-position: -245px -43px}
+#board .bettingControl .betControl_win .subtabs_nav > li.off a{font-weight:normal;font-size:12px;color:#fff;}
+
+/* BETTING CONTROL */
+#board .bettingControl .betControl_win .subtab_content{position:relative;width:540px;}
+#board .bettingControl .betControl_win .subtab_content .eh_tit{display:block;width:100%;padding:3px 0 2px 0;text-align:center;font-size:12px;color:#b178ea;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice02{position:relative;overflow:hidden;width:98%;margin:0 auto;padding-top:8px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li{position:relative;float:left;width:50%;height:190px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_evenClick{position:relative;display:block;overflow:hidden;width:210px;height:168px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -1px -274px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_evenClick:hover{background-position:-1px -462px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .off{background-position:-1px -650px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_evenClick .txt_tit{position:absolute;left:0;bottom:10px;width:100%;text-align:center;font-weight:bold;font-size:14px;color:#fff;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .even_checkd{position:absolute;left:16px;top:-11px;width:234px;height:190px;z-index:1;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_holeClick{position:relative;display:block;width:210px;height:168px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -231px -274px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_holeClick:hover{background-position:-231px -462px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .off{background-position:-231px -650px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .img_holeClick .txt_tit{position:absolute;left:0;bottom:10px;width:100%;text-align:center;font-weight:bold;font-size:14px;color:#fff;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice02 > li .hole_checkd{position:absolute;left:16px;top:-11px;width:234px;height:190px;z-index:1;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice03{position:relative;overflow:hidden;width:98%;margin:0 auto;padding-top:8px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li{float:left;position:relative;width:33.33%;height:190px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_red{position:relative;display:block;overflow:hidden;width:140px;height:168px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -461px -274px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_red:hover{background-position:-461px -462px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .off{background-position:-461px -650px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_green{position:relative;display:block;overflow:hidden;width:140px;height:168px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -621px -274px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_green:hover{background-position:-621px -462px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .off{background-position:-621px -650px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_purple{position:relative;display:block;overflow:hidden;width:140px;height:168px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -781px -274px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .imgClick_purple:hover{background-position:-781px -462px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .off{background-position:-781px -650px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .checkd_red,
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .checkd_green,
+#board .bettingControl .betControl_win .subtab_content .eh_choice03 > li .checkd_purple{position:absolute;left:6px;top:-10px;width:234px;height:190px;z-index:1;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice04{position:relative;overflow:hidden;width:98%;margin:0 auto;padding-top:15px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li{float:left;position:relative;width:50%;height:91px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li:nth-child(1),
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li:nth-child(2){margin-bottom:1px}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li:nth-child(3){clear:both}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_red{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -1px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_red:hover{background-position:-1px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .off{background-position:-1px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_yellow{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -231px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_yellow:hover{background-position:-231px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .off{background-position:-231px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_green{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -461px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_green:hover{background-position:-461px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .off{background-position:-461px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_purple{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -691px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .imgClick_purple:hover{background-position:-691px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .off{background-position:-691px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .checkd_red,
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .checkd_yellow,
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .checkd_green,
+#board .bettingControl .betControl_win .subtab_content .eh_choice04 > li .checkd_purple{position:absolute;left:16px;top:-11px;width:234px;height:90px;z-index:1;}
+
+
+
+
+
+
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice05{position:relative;overflow:hidden;width:98%;margin:0 auto;padding-top:15px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li{float:left;position:relative;width:50%;height:91px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li:nth-child(1),
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li:nth-child(2){margin-bottom:1px}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li:nth-child(3){clear:both}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_red{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -1px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_red:hover{background-position:-1px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .off{background-position:-1px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_yellow{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -231px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_yellow:hover{background-position:-231px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .off{background-position:-231px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_green{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -461px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_green:hover{background-position:-461px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .off{background-position:-461px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_purple{position:relative;display:block;overflow:hidden;width:210px;height:68px;margin:0 auto;background:url('_img/btn_common.png') no-repeat -691px -840px;z-index:2;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .imgClick_purple:hover{background-position:-691px -928px;}
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .off{background-position:-691px -1016px;}
+
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .checkd_red,
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .checkd_yellow,
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .checkd_green,
+#board .bettingControl .betControl_win .subtab_content .eh_choice05 > li .checkd_purple{position:absolute;left:16px;top:-11px;width:234px;height:90px;z-index:1;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area{position:relative;margin-top:15px;width:100%;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area{position:absolute;left:12px;top:-25px;width:518px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .bet_cash_txt{display:block;float:left;text-align:left;font-size:11px;color:#ddbcff;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .bet_cash_txt > em{display:inline-block;width:130px;padding-left:10px;color:#f4db07;border-bottom:1px solid #9445e3;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .bet_cash_txt > em input[type="text"]{background: transparent;outline:0;border:0;color:#f4db07}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .bet_cash_txt > em ::-webkit-input-placeholder{color:#f4db07}
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .expected_txt{display:block;float:left;margin-left:10px;text-align:left;font-size:11px;color:#ddbcff;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .expected_txt > em{display:inline-block;width:130px;padding-left:10px;color:#f4db07;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .expected_txt > em input[type="text"]{background: transparent;width:100px;outline:0;border:0;color:#f4db07}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .betCash_area .expected_txt > em ::-webkit-input-placeholder{color:#f4db07}
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul{width:518px;margin:0 auto;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li{float:left;margin:0 0 2px 2px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li:first-child,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li.first{margin-left:0;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li:nth-child(7){clear:both;margin-left:0;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a{display:block;width:66px;height:26px;line-height:26px;text-align:center;font-size:11px;color:#a366e0;background:url('_img/btn_common.png') no-repeat -379px -1px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a:hover,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.on{font-weight:bold;color:#fff;background:url('_img/btn_common.png') no-repeat -455px -1px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.off{font-weight:normal;color:#fff;background:url('_img/btn_common.png') no-repeat -531px -1px;}
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_allin,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_rebet,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_reset{width:82px;height:26px;line-height:26px;text-align:center;font-size:11px;color:#a366e0;background:url('_img/btn_common.png') no-repeat -379px -37px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_allin:hover,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_allin.on{font-weight:bold;color:#fff;background:url('_img/btn_common.png') no-repeat -471px -37px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_allin.off{font-weight:normal;color:#fff;background:url('_img/btn_common.png') no-repeat -563px -37px;}
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_rebet:hover,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_reset:hover,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_rebet.on,
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_reset.on{font-weight:bold;color:#fff;background:url('_img/btn_common.png') no-repeat -471px -37px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li a.btn_reset.off{font-weight:normal;color:#fff;background:url('_img/btn_common.png') no-repeat -563px -37px;}
+
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li .credit_txt{display:block;width:144px;height:26px;line-height:26px;padding-left:10px;text-align:left;font-size:11px;color:#a366e0;background:url('_img/btn_common.png') no-repeat -379px -109px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li .credit_txt.off{color:#fff;background:url('_img/btn_common.png') no-repeat -543px -109px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li .credit_txt .credit_price{display:inline-block;width:100px;text-align:center;color:#f4db07}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .bettingchips_ul > li .credit_txt .credit_price.off{display:inline-block;width:100px;text-align:center;color:#fff}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .btn_bet {position:absolute;right:10px;top:-27px;width:110px;height:82px;line-height:82px;margin-left:2px;text-align:center;font-weight:bold;font-size:14px;color:#402a00;background:url('_img/btn_common.png') no-repeat -721px -1px;}
+#board .bettingControl .betControl_win .subtab_content .bettingchips_area .btn_bet on{font-weight:bold;font-size:14px;color:#fff;background:url('_img/btn_common.png') no-repeat -841px -1px;}
+
+/* BETTING HISTORY */
+#board .bettingControl .betControl_win .betHistory{position:absolute;right:0;bottom:0;width:288px;height:349px;}
+#board .bettingControl .betControl_win .betHistory .head_tit{display:block;width:100%;height:44px;line-height:44px;text-align:center;font-size:14px;color:#fff;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area{width:278px;height:236px;padding-right:2px;overflow-y:scroll;margin-left:6px;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li{width:100%}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li:nth-child(odd){width:268px;height:48px;background:url('_img/btn_common.png') no-repeat -1px -149px;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li:nth-child(even){height:46px;background:url('_img/btn_common.png') no-repeat -1px -207px;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li:last-child{border-bottom:1px solid #620fb2;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_txt{float:left;display:block;width:129px;height:46px;line-height:46px;text-align:center;font-size:14px;color:#fff;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle{position:relative;float:left;display:block;width:48px;height:46px;line-height:46px;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle .circle_red{position:absolute;left:9px;top:9px;width:28px;height:28px;border:1px solid #fff;border-radius:100%;background:#e71810;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle .circle_blue{position:absolute;left:9px;top:9px;width:28px;height:28px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle .circle_green{position:absolute;left:9px;top:9px;width:28px;height:28px;border:1px solid #fff;border-radius:100%;background:#16f216;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle .circle_purple{position:absolute;left:9px;top:9px;width:28px;height:28px;border:1px solid #fff;border-radius:100%;background:#b35aff;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_circle .circle_yellow{position:absolute;left:9px;top:9px;width:28px;height:28px;border:1px solid #fff;border-radius:100%;background:#ffd90a;}
+
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_price{float:left;display:block;width:60px;height:46px;line-height:46px;text-align:center;font-size:14px;color:#f3db08;}
+#board .bettingControl .betControl_win .betHistory .bh_list_area > li .type_batting{float:left;display:block;width:31px;height:46px;line-height:46px;text-align:center;font-size:12px;color:#995ed6;}
+
+#board .bettingControl .betControl_win .betHistory .head_desc{position:absolute;left:24px;bottom:8px;width:240px;height:42px;line-height:14px;padding-top:8px;border:1px solid #963cec;border-radius:3px;text-align:center;font-size:12px;color:#cc9112;}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {width:8px;height:8px}
+::-webkit-scrollbar-track {border-radius:8px}
+::-webkit-scrollbar-thumb {border-radius:8px;background:#811ae4; box-shadow: inset 0 0 4px rgba(129,26,228,0.8)}
+
+/* RECORDS CONTAINER */
+#board .bettingControl .recordsControl_win{position:relative;width:830px;height:349px;background:url('_img/bg_recoresControlBox.png') no-repeat left bottom;}
+#board .bettingControl .recordsControl_win .rec_table-area{position:relative;float:left;width:465px;padding:18px 0 0 10px;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_nav{width:95%;overflow:hidden;margin:0 auto;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_nav > li{float:left;width:25%;background:url('_img/btn_common.png') no-repeat -379px -145px;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_nav > li:first-child{background:none;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_nav > li > span{display:block;text-align:center;font-weight:bold;font-size:12px;color:#e5caff;}
+
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list{clear:both;position:relative;overflow:hidden;margin-top:14px;width:100%;border:1px solid #610eb3;border-top:none;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li{width:100%;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li:nth-child(odd){border-top:1px solid #610eb3;border-bottom:1px solid #610eb3;background:#381574;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li.on{border:1px solid #ffeb00;background:#f3b60c;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li.on > a > span{color:#331501;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li > a .date_txt{display:inline-block;width:120px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#963cec;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li > a .time_txt{display:inline-block;width:120px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#963cec;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li > a .betting_txt{display:inline-block;width:97px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#f4db07;}
+#board .bettingControl .recordsControl_win .rec_table-area .rec_table_list > li > a .win_txt{display:inline-block;width:97px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#f4db07;}
+
+#board .bettingControl .recordsControl_win .rec_table-area .paging_group{position:relative;width:100%;text-align:center;}
+#board .bettingControl .recordsControl_win .rec_table-area .paging_group > a{text-align:center;font-size:12px;color:#963cec}
+#board .bettingControl .recordsControl_win .rec_table-area .paging_group > a.on{color:#c07fff}
+
+#board .bettingControl .recordsControl_win .betting_detall_area{position:relative;float:right;width:346px;height:330px;margin:10px 9px 0 0;background:url('_img/bg_recoresControlBox_detall.png') no-repeat left bottom;}
+#board .bettingControl .recordsControl_win .betting_detall_area .tit{display:block;width:100%;height:35px;line-height:35px;text-align:center;font-size:12px;color:#f5d80d;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head{position:relative;width:100%;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li{float:left;padding:7px 0 6px 0;text-align:center;font-size:11px;color:#efa208;background:url('_img/btn_common.png') no-repeat -379px -161px;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li:first-child{width:65px;background:none;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li:nth-child(2){width:60px;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li:nth-child(3){width:50px;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li:nth-child(4){width:85px;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_head > li:nth-child(5){width:85px;}
+
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table{position:relative;overflow:hidden;width:344px;margin:0 auto;border:1px solid #f3af0c;border-bottom:0px;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li{width:100%;border-bottom:1px solid #f3af0c;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li:nth-child(odd){background:#844308;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li:nth-child(even){background:#652c07;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li:last-child{border-bottom:none;background:#301301;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .type_txt{display:inline-block;width:58px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#fff;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .detail_txt{display:inline-block;width:58px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#fff;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .rate_txt{display:inline-block;width:48px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#f4db07;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .bet_txt{display:inline-block;width:80px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#f4db07;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .win_txt{display:inline-block;width:80px;height:28px;line-height:28px;text-align:center;font-size:11px;color:#f4db07;}
+
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .total_txt{display:inline-block;float:left;width:50px;height:30px;line-height:30px;text-align:center;font-weight:bold;font-size:12px;color:#f4db07;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .totalBet_txt{display:inline-block;float:right;width:83px;height:30px;line-height:30px;text-align:center;font-weight:bold;font-size:12px;color:#f4db07;}
+#board .bettingControl .recordsControl_win .betting_detall_area .bd_table > li .totalwin_txt{display:inline-block;float:right;width:83px;height:30px;line-height:30px;text-align:center;font-weight:bold;font-size:12px;color:#f4db07;}
+
+/* PATTERN CONTAINER */
+#board .bettingControl .patternControl_win{position:relative;width:830px;height:499px;background:url('_img/bg_patternControlBox.png') no-repeat left bottom;}
+#board .bettingControl .patternControl_win .spattern_nav{position:relative;overflow:hidden;width:812px;margin-left:7px;padding:10px 0 0 10px;border-bottom:1px solid #6045ff;}
+#board .bettingControl .patternControl_win .spattern_nav > li{float:left;margin-right:2px;background:url('_img/btn_common.png') no-repeat -1px -43px;}
+#board .bettingControl .patternControl_win .spattern_nav > li:last-child{margin-right:0px;}
+#board .bettingControl .patternControl_win .spattern_nav > li a{display:block;width:100px;height:28px;line-height:28px;text-align:center;font-size:12px;color:#4a60e3;}
+#board .bettingControl .patternControl_win .spattern_nav > li.on{background-position: -125px -43px}
+#board .bettingControl .patternControl_win .spattern_nav > li.on a{font-weight:bold;font-size:12px;color:#f1f7ff;}
+#board .bettingControl .patternControl_win .spattern_nav > li.off{background-position: -245px -43px}
+#board .bettingControl .patternControl_win .spattern_nav > li.off a{font-weight:normal;font-size:12px;color:#fff;}
+
+#board .bettingControl .patternControl_win .pattern_header{position:relative;width:804px;margin:0 auto;padding-top:15px;}
+#board .bettingControl .patternControl_win .pattern_header > li{float:left;padding:6px 20px 12px 0;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_red{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#e71810;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_blue{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_orange{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#f4a500;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_yellow{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#ffd90a;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_green{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#16f216;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_skyblue{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#12d5ff;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_blue{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_purple{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#b35aff;}
+#board .bettingControl .patternControl_win .pattern_header > li .circle_black{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#000000;}
+#board .bettingControl .patternControl_win .pattern_header > li .percent_txt{display:block;float:left;float:left;padding-left:9px;height:24px;line-height:24px;text-align:left;font-size:11px;color:#d4a6ff;}
+
+#board .bettingControl .patternControl_win .pattern_header > li .percent_txt{display:block;float:left;padding-left:9px;height:24px;line-height:24px;text-align:left;font-size:11px;color:#d4a6ff;}
+
+#board .bettingControl .patternControl_win .patterngrid{position:relative;overflow-y:auto;width:804px;margin:0 auto;height:393px;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data{position:relative;width:20000px;height:385px;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data > dl > dt{width:35px;height:35px;background:#fff url('_img/pattern_bg.png') repeat right bottom;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data > dl > dd{background:#fff url('_img/pattern_bg.png') repeat right bottom;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_a{position:relative;width:35px;float:left;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_a > dt{width:35px;height:35px;line-height:35px;text-align:center;font-weight:bold;font-size:12px;color:#e71810;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_a > dd{position:relative;width:35px;height:35px;line-height:30px;padding:5px 0 0 0;text-align:center;}
+
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_b{position:relative;width:35px;float:left;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_b > dt{width:35px;height:35px;line-height:35px;text-align:center;font-weight:bold;font-size:12px;color:#0c5bf6;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .first_b > dd{position:relative;width:35px;height:35px;line-height:30px;padding:5px 0 0 0;text-align:center;}
+
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .row_count,
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .row_order{clear:both;background:#d3e6ff;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .row_count > dd{float:left;width:35px;height:35px;line-height:35px;margin:0;text-align:center;font-weight:bold;font-size:12px;color:#2b2b2b;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data .row_order > dd{float:left;width:35px;height:35px;line-height:35px;margin:0;text-align:center;font-weight:bold;font-size:12px;color:#2b2b2b;}
+
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data dl > dd .circle_red{display:block;width:24px;margin:0 auto;height:24px;border:1px solid #fff;border-radius:100%;background:#e71810;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data dl > dd .circle_blue{display:block;width:24px;margin:0 auto;height:24px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data dl > dd .circle_green{display:block;width:24px;margin:0 auto;height:24px;border:1px solid #fff;border-radius:100%;background:#16f216;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data dl > dd .circle_purple{display:block;width:24px;margin:0 auto;height:24px;border:1px solid #fff;border-radius:100%;background:#b35aff;}
+#board .bettingControl .patternControl_win .patterngrid .innerTable_data dl > dd .circle_yellow{display:block;width:24px;margin:0 auto;height:24px;border:1px solid #fff;border-radius:100%;background:#ffd90a;}
+
+#board .bettingControl .patternControl_win .pattern_header02{position:relative;overflow:hidden;width:804px;margin:0 auto;padding:15px 0 61px 0;}
+#board .bettingControl .patternControl_win .pattern_header02 > li{float:left;width:25%;padding:6px 0px 12px 0;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_red{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#e71810;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_orange{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#f4a500;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_yellow{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#ffd90a;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_green{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#16f216;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_skyblue{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#12d5ff;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_blue{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_purple{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#b35aff;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .circle_black{display:block;float:left;width:24px;height:24px;border:1px solid #fff;border-radius:100%;background:#000000;}
+#board .bettingControl .patternControl_win .pattern_header02 > li .percent_txt{display:block;float:left;float:left;padding-left:9px;height:24px;line-height:24px;text-align:left;font-size:11px;color:#d4a6ff;}
+
+#board .bettingControl .patternControl_win .patterngrid02{position:relative;overflow-y:auto;width:804px;margin:0 auto;height:288px;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data{position:relative;width:20000px;height:280px;background:#fff url('_img/pattern_bg.png') repeat;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data .p_number{position:relative;width:35px;float:left;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data .p_number > dt{width:35px;height:35px;line-height:35px;text-align:center;font-weight:bold;font-size:12px;color:#e71810;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data .p_number > dd{position:relative;width:32px;height:32px;line-height:30px;margin:3px 0 0 3px;text-align:center;}
+
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_red{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#e71810;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_orange{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#f4a500;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_yellow{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#ffd90a;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_green{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#16f216;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_skyblue{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#12d5ff;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_blue{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#0c5bf6;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_purple{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#b35aff;}
+#board .bettingControl .patternControl_win .patterngrid02 .patternTable_data dl > dd .circle_black{display:block;width:26px;height:26px;line-height:26px;text-align:center;font-size:10px;color:#fff;font-style:normal;letter-spacing:-1px;border:1px solid #fff;border-radius:100%;background:#000000;}
+
+/* HISTORY CONTAINER */
+#board .bettingControl .historyControl_win{position:relative;width:830px;height:349px;background:url('_img/bg_historyControlBox.png') no-repeat left bottom;}
+#board .bettingControl .historyControl_win .racehorse_ranking{position:absolute;left:30px;top:40px;width:50px;height:300px;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n1{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number1.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n2{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number2.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n3{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number3.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n4{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number4.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n5{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number5.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n6{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number6.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n7{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number7.png') no-repeat right center;}
+#board .bettingControl .historyControl_win .racehorse_ranking .racehorse_n8{position:relative;width:50px;height:36px;line-height:36px;text-align:left;font-weight:bold;font-size:12px;color:#fff;background:url('_img/racehorse_number8.png') no-repeat right center;}
+
+#board .bettingControl .historyControl_win .history_grid{position:absolute;right:19px;bottom:6px;overflow-y:auto;width:711px;margin:0 auto;height:328px;}
+#board .bettingControl .historyControl_win .history_grid .historyTable_data{position:relative;width:20000px;height:320px;}
+#board .bettingControl .historyControl_win .history_grid .historyTable_data .ranking_no{position:relative;width:71px;float:left;}
+#board .bettingControl .historyControl_win .history_grid .historyTable_data .ranking_no > dt{width:71px;height:24px;line-height:24px;text-align:center;font-weight:bold;font-size:11px;color:#2b2b2b;background: url('_img/history_patterndt_bg.png') no-repeat right bottom;}
+#board .bettingControl .historyControl_win .history_grid .historyTable_data .ranking_no > dd{position:relative;width:71px;height:35px;line-height:28px;padding-top:5px;text-align:center;font-weight:bold;font-size:12px;color:#bdbdbd;background:#fff url('_img/history_pattern_bg.png') repeat right bottom;}
+#board .bettingControl .historyControl_win .history_grid .historyTable_data .ranking_no > dd .circle_purple{display:block;width:24px;margin:0 auto;height:24px;line-height:24px;border:1px solid #fff;border-radius:100%;text-align:center;font-weight:bold;font-size:12px;color:#fff;background:#b35aff;vertical-align:middle;}
+
+#beauty {
+	position:absolute;
+	width: 830px;
+	height: 560px;
+	margin-top: 100px;
+	background-image:url('../assets/racingbeauty.png');
+	background-repeat:no-repeat;
+	background-position: top right;
+	background-size: 320px; 
+	z-index:9999;
+}

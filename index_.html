@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>MonkeyRace</title>
+
+    <script src="libs/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="libs/phaser.min.js"></script>
+    <!--<script src="dodge.js"></script>-->
+    <!--<script src="game.js"></script>-->
+
+    <script type="text/javascript" src="js/common.js"></script>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.js"></script>
+    <![endif]-->
+
+<link rel="stylesheet" href="styles/default_mod__.css" type="text/css" />
+	<style>
+		/* Current Bet History animation */
+		.fade li {
+			transition: all 0.4s ease-out;
+			opacity: 0;
+			height: 2em;
+		}
+		.fade li.show {
+			opacity: 1;
+		}
+		.slide-fade li {
+			transition: all 0.4s ease-out;
+			opacity: 0;
+		}
+		.slide-fade li.show {
+			opacity: 1;
+		}
+		.swing {
+			perspective: 100px;
+		}
+		.swing li {
+			opacity: 0;
+			transform: rotateX(-90deg);
+			transition: all 0.5s cubic-bezier(.36,-0.64,.34,1.76);
+		}
+
+		.swing li.show {
+			opacity: 1;
+			transform: none;
+			transition: all 0.5s cubic-bezier(.36,-0.64,.34,1.76);
+		}
+		.disabled {
+			pointer-events:none; //This makes it not clickable
+		opacity:0.6;         //This grays it out to look disabled
+		}
+		.fade-in {
+			opacity: 1;
+			animation-name: fadeInOpacity;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 1s;
+		}
+		@keyframes fadeInOpacity {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+	</style>
+</head>
+<body>
+<div id="wrap">
+    <div id="gamebox">
+        <div id="beauty"></div>
+        <div id="content"></div>
+        <!-- #board -->
+        <div id="board">
+
+            <!-- .tabContainer  상단 텝 메뉴 시작(공통) -->
+            <div class="tabContainer">
+                <ul class="tabs_nav" id="tab">
+                    <li class="on"><a href="#none;" rel="tab1">BET</a></li>
+                    <li><a href="#none;" rel="tab2">RECORDS</a></li>
+                    <li><a href="#none;" rel="tab3">PATTERN</a></li>
+                    <li><a href="#none;" rel="tab4">HISTORY</a></li>
+                </ul>
+            </div>
+            <!-- /.tabContainer  상단 텝 메뉴 끝 -->
+
+            <!-- .bettingControl -->
+            <div class="bettingControl tab_con">
+
+                <!-- .betControl_win 내용 시작 -->
+                <div class="betControl_win tab_content" id="tab1">
+                    <!-- 서브 텝 시작(공통) -->
+                    <ul class="subtabs_nav" id="subtab">
+                        <li class="on" id="betTab1"><a href="#none;" rel="subtab1">EVEN&#47;HOLE</a></li>
+                        <li id="betTab2"><a href="#none;" rel="subtab2">S&#47;M&#47;L</a></li>
+                        <li id="betTab3"><a href="#none;" rel="subtab3">A&#47;B&#47;C&#47;D</a></li>
+                        <li id="betTab4"><a href="#none;" rel="subtab4">POWERBALL</a></li>
+                    </ul>
+                    <!-- 서브 텝 끝 -->
+                    <!-- 서브 내용 시작 -->
+                    <div class="subtab_con">
+                        <!-- .컨텐트01 -->
+                        <div class="subtab_content fade-in" id="subtab1">
+                            <span class="eh_tit">It is a betthat matches the hole &#47; pair of the number of the horse<br />that came in first place.</span>
+                            <ul class="eh_choice02">
+                                <li>
+                                    <a href="#" class="img_evenClick" data-val="even"><span class="txt_tit">EVEN</span></a>
+                                    <span class="even_checkd"><img src="styles/_img/icon_circle_img.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="img_holeClick" data-val="hole"><span class="txt_tit">HOLE</span></a>
+                                    <span class="hole_checkd"><img src="styles/_img/icon_circle_img.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                            </ul>
+                            <div class="bettingchips_area">
+                                <div class="betCash_area">
+                                    <span class="bet_cash_txt">Bet Cash: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                    <span class="expected_txt">Expected Amounts: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                </div>
+                                <ul class="bettingchips_ul">
+                                    <li class="first"><a href="#">1,000</a></li>
+                                    <li><a href="#">3,000</a></li>
+                                    <li><a href="#">5,000</a></li>
+                                    <li><a href="#">10,000</a></li>
+                                    <li><a href="#">50K</a></li>
+                                    <li><a href="#">100K</a></li>
+                                    <li><a href="#" class="btn_allin">ALL IN</a></li>
+                                    <li><a href="#" class="btn_rebet">REBET</a></li>
+                                    <li><a href="#" class="btn_reset">RESET</a></li>
+                                    <li><span class="credit_txt">CREDIT : <em class="credit_price">2,921,000</em></span></li>
+                                </ul>
+                                <a href="#none;" class="btn_bet" data-val="0">BET</a>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트01 -->
+                        <!-- .컨텐트02 -->
+                        <div class="subtab_content fade-in" id="subtab2">
+                            <span class="eh_tit">It is a betthat matches the hole &#47; pair of the number of the horse<br />that came in first place.</span>
+                            <ul class="eh_choice03">
+                                <li>
+                                    <a href="#" class="imgClick_red" data-val="s"></a>
+                                    <span class="checkd_red"><img src="styles/_img/icon_circle_img_middle.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_green" data-val="m"></a>
+                                    <span class="checkd_green"><img src="styles/_img/icon_circle_img_middle.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_purple" data-val="l"></a>
+                                    <span class="checkd_purple"><img src="styles/_img/icon_circle_img_middle.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                            </ul>
+                            <div class="bettingchips_area">
+                                <div class="betCash_area">
+                                    <span class="bet_cash_txt">Bet Cash: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                    <span class="expected_txt">Expected Amounts: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                </div>
+                                <ul class="bettingchips_ul">
+                                    <li class="first"><a href="#" class="on">1,000</a></li>
+                                    <li><a href="#">3,000</a></li>
+                                    <li><a href="#">5,000</a></li>
+                                    <li><a href="#">10,000</a></li>
+                                    <li><a href="#">50K</a></li>
+                                    <li><a href="#">100K</a></li>
+                                    <li><a href="#" class="btn_allin">ALL IN</a></li>
+                                    <li><a href="#" class="btn_rebet">REBET</a></li>
+                                    <li><a href="#" class="btn_reset">RESET</a></li>
+                                    <li><span class="credit_txt">CREDIT : <em class="credit_price">2,921,000</em></span></li>
+                                </ul>
+                                <a href="#none;" class="btn_bet" data-val="1">BET</a>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트02 -->
+                        <!-- .컨텐트03 -->
+                        <div class="subtab_content fade-in" id="subtab3">
+                            <span class="eh_tit">It is a betthat matches the hole &#47; pair of the number of the horse<br />that came in first place.</span>
+                            <ul class="eh_choice04">
+                                <li>
+                                    <a href="#" class="imgClick_red" data-val="a"></a>
+                                    <span class="checkd_red"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_yellow" data-val="b"></a>
+                                    <span class="checkd_yellow"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_green" data-val="c"></a>
+                                    <span class="checkd_green"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_purple" data-val="d"></a>
+                                    <span class="checkd_purple"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                            </ul>
+                            <div class="bettingchips_area">
+                                <div class="betCash_area">
+                                    <span class="bet_cash_txt">Bet Cash: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                    <span class="expected_txt">Expected Amounts: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                </div>
+                                <ul class="bettingchips_ul">
+                                    <li class="first"><a href="#">1,000</a></li>
+                                    <li><a href="#">3,000</a></li>
+                                    <li><a href="#">5,000</a></li>
+                                    <li><a href="#">10,000</a></li>
+                                    <li><a href="#">50K</a></li>
+                                    <li><a href="#">100K</a></li>
+                                    <li><a href="#" class="btn_allin on">ALL IN</a></li>
+                                    <li><a href="#" class="btn_rebet">REBET</a></li>
+                                    <li><a href="#" class="btn_reset">RESET</a></li>
+                                    <li><span class="credit_txt">CREDIT : <em class="credit_price">2,921,000</em></span></li>
+                                </ul>
+                                <a href="#none;" class="btn_bet" data-val="2">BET</a>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트03 -->
+                        <!-- .컨텐트04 -->
+                        <div class="subtab_content fade-in" id="subtab4">
+                            <span class="eh_tit">It is a betthat matches the hole &#47; pair of the number of the horse<br />that came in first place.</span>
+                            <ul class="eh_choice05">
+                                <li>
+                                    <a href="#" class="imgClick_red" data-val="a"></a>
+                                    <span class="checkd_red"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_yellow" data-val="b"></a>
+                                    <span class="checkd_yellow"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_green" data-val="c"></a>
+                                    <span class="checkd_green"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="imgClick_purple" data-val="d"></a>
+                                    <span class="checkd_purple"><img src="styles/_img/icon_circle_img_small.png" alt="" style="display:none;" /></span></a>
+                                </li>
+                            </ul>
+                            <div class="bettingchips_area">
+                                <div class="betCash_area">
+                                    <span class="bet_cash_txt">Bet Cash: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                    <span class="expected_txt">Expected Amounts: <em><input type="text" name="" value="" placeholder="0"></em></span>
+                                </div>
+                                <ul class="bettingchips_ul">
+                                    <li class="first"><a href="#">1,000</a></li>
+                                    <li><a href="#">3,000</a></li>
+                                    <li><a href="#">5,000</a></li>
+                                    <li><a href="#">10,000</a></li>
+                                    <li><a href="#">50K</a></li>
+                                    <li><a href="#">100K</a></li>
+                                    <li><a href="#" class="btn_allin on">ALL IN</a></li>
+                                    <li><a href="#" class="btn_rebet">REBET</a></li>
+                                    <li><a href="#" class="btn_reset">RESET</a></li>
+                                    <li><span class="credit_txt">CREDIT : <em class="credit_price">2,921,000</em></span></li>
+                                </ul>
+                                <a href="#none;" class="btn_bet" data-val="3">BET</a>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트04 -->
+                    </div>
+                    <!-- 서브 내용 끝 -->
+                    <!-- .betHistory -->
+                    <div class="betHistory">
+                        <span class="head_tit">Current Bet History</span>
+                        <ul class="bh_list_area">
+
+                        </ul>
+                        <span class="head_desc">Maximum earned amount for<br />all successes</span>
+                    </div>
+                    <!-- /.betHistory -->
+                </div>
+                <!-- .betControl_win 내용 끝 -->
+
+                <!-- .recordsControl_win -->
+                <div class="recordsControl_win tab_content" id="tab2">
+                    <div class="rec_table-area">
+                        <ul class="rec_nav">
+                            <li><span>GAME No.</span></li>
+                            <li><span>TIME</span></li>
+                            <li><span>BETAMOUNT</span></li>
+                            <li><span>WINAMOUNT</span></li>
+                        </ul>
+                        <ul class="rec_table_list">
+                            <li>
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                            <li class="on">
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="date_txt">2017&#47;04&#47;19-1205</span>
+                                    <span class="time_txt">2017&#47;04&#47;19 08:00</span>
+                                    <span class="betting_txt">10,000</span>
+                                    <span class="win_txt">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="paging_group">
+                            <a href="javascript:;" class="on">1</a>
+                            <a href="javascript:;">2</a>
+                            <a href="javascript:;">3</a>
+                        </div>
+                    </div>
+                    <div class="betting_detall_area">
+                        <span class="tit">Betting Detall</span>
+                        <ul class="bd_head">
+                            <li>TYPE</li>
+                            <li>DETAIL</li>
+                            <li>RATE</li>
+                            <li>BETAMOUNT</li>
+                            <li>WINAMOUNT</li>
+                        </ul>
+                        <ul class="bd_table">
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="type_txt">A&#47;B&#47;C&#47;D</span>
+                                <span class="detail_txt">1,3,5,7</span>
+                                <span class="rate_txt">-</span>
+                                <span class="bet_txt">10,000</span>
+                                <span class="win_txt">19,500</span>
+                            </li>
+                            <li>
+                                <span class="total_txt">TOTAL</span>
+                                <span class="detail_txt">-</span>
+                                <span class="rate_txt">-</span>
+                                <span class="totalBet_txt">210,000</span>
+                                <span class="totalwin_txt">34,500</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.recordsControl_win -->
+
+                <!-- .patternControl_win -->
+                <div class="patternControl_win tab_content" id="tab3">
+                    <!-- 서브 텝 시작(공통) -->
+                    <ul class="spattern_nav" id="patterntab">
+                        <li class="on"><a href="#none;" rel="patterntab1">EVEN&#47;HOLE</a></li>
+                        <li><a href="#none;" rel="patterntab2">EVEN&#47;HOLE</a></li>
+                        <li><a href="#none;" rel="patterntab3">EVEN&#47;HOLE</a></li>
+                        <li><a href="#none;" rel="patterntab4">EVEN&#47;HOLE</a></li>
+                    </ul>
+                    <!-- 서브 텝 끝 -->
+                    <!-- 서브 내용 시작 -->
+                    <div class="subtab_con">
+                        <!-- .컨텐트01 -->
+                        <div class="patterntab_content" id="patterntab1">
+                            <ul class="pattern_header">
+                                <li><i class="circle_red"></i> <span class="percent_txt">55 [55%] 7 straight</span></li>
+                                <li><i class="circle_blue"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                            </ul>
+                            <div class="patterngrid">
+                                <div class="innerTable_data">
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="row_count">
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                    </dl>
+                                    <dl class="row_order">
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트01 -->
+                        <!-- .컨텐트02 -->
+                        <div class="patterntab_content" id="patterntab2">
+                            <ul class="pattern_header">
+                                <li><i class="circle_red"></i> <span class="percent_txt">55 [55%] 7 straight</span></li>
+                                <li><i class="circle_blue"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                                <li><i class="circle_green"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                            </ul>
+                            <div class="patterngrid">
+                                <div class="innerTable_data">
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="row_count">
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                    </dl>
+                                    <dl class="row_order">
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트02 -->
+                        <!-- .컨텐트03 -->
+                        <div class="patterntab_content" id="patterntab3">
+                            <ul class="pattern_header">
+                                <li><i class="circle_red"></i> <span class="percent_txt">55 [55%] 7 straight</span></li>
+                                <li><i class="circle_blue"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                                <li><i class="circle_orange"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                                <li><i class="circle_yellow"></i> <span class="percent_txt">45 [45%] 8 straight</span></li>
+                            </ul>
+                            <div class="patterngrid">
+                                <div class="innerTable_data">
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_green"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_yellow"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd><i class="circle_red"></i></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_a">
+                                        <dt>A</dt>
+                                        <dd><i class="circle_red"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="first_b">
+                                        <dt>B</dt>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                        <dd></dd>
+                                    </dl>
+                                    <dl class="row_count">
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                        <dd>1</dd>
+                                    </dl>
+                                    <dl class="row_order">
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                        <dd>2</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트03 -->
+                        <!-- .컨텐트04 -->
+                        <div class="patterntab_content" id="patterntab4">
+                            <ul class="pattern_header02">
+                                <li><i class="circle_red"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_orange"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_yellow"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_green"></i> <span class="percent_txt">33 [12%]</span></li>
+
+                                <li><i class="circle_skyblue"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_blue"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_purple"></i> <span class="percent_txt">33 [12%]</span></li>
+                                <li><i class="circle_black"></i> <span class="percent_txt">33 [12%]</span></li>
+                            </ul>
+                            <div class="patterngrid02">
+                                <div class="patternTable_data">
+                                    <dl class="p_number">
+                                        <dd><i class="circle_red">1111</i></dd>
+                                        <dd><i class="circle_orange">2222</i></dd>
+                                        <dd><i class="circle_yellow">3333</i></dd>
+                                        <dd><i class="circle_green">4444</i></dd>
+                                        <dd><i class="circle_skyblue"></i></dd>
+                                        <dd><i class="circle_blue"></i></dd>
+                                        <dd><i class="circle_purple"></i></dd>
+                                        <dd><i class="circle_black"></i></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.컨텐트04 -->
+                    </div>
+                    <!-- 서브 내용 끝 -->
+                </div>
+                <!-- /.patternControl_win -->
+
+                <!-- .historyControl_win -->
+                <div class="historyControl_win tab_content" id="tab4">
+                    <!-- 서브 내용 시작 -->
+                    <ul class="racehorse_ranking">
+                        <li class="racehorse_n1">1.</li>
+                        <li class="racehorse_n2">2.</li>
+                        <li class="racehorse_n3">3.</li>
+                        <li class="racehorse_n4">4.</li>
+                        <li class="racehorse_n5">5.</li>
+                        <li class="racehorse_n6">6.</li>
+                        <li class="racehorse_n7">7.</li>
+                        <li class="racehorse_n8">8.</li>
+                    </ul>
+                    <div class="history_grid">
+                        <div class="historyTable_data">
+                            <dl class="ranking_no">
+                                <dt>No.0001</dt>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>6</dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd>4</dd>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd>5</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0002</dt>
+                                <dd>5</dd>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd>6</dd>
+                                <dd>4</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0003</dt>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd>4</dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd>6</dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0004</dt>
+                                <dd>6</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd>4</dd>
+                                <dd>7</dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0005</dt>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>6</dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd>4</dd>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd>5</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0006</dt>
+                                <dd>5</dd>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd>6</dd>
+                                <dd>4</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0007</dt>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd>4</dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd>6</dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0008</dt>
+                                <dd>6</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd>4</dd>
+                                <dd>7</dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0009</dt>
+                                <dd>7</dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd>4</dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd>6</dd>
+                            </dl>
+                            <dl class="ranking_no">
+                                <dt>No.0010</dt>
+                                <dd>6</dd>
+                                <dd><i class="circle_purple">3</i></dd>
+                                <dd><i class="circle_purple">2</i></dd>
+                                <dd><i class="circle_purple">8</i></dd>
+                                <dd><i class="circle_purple">1</i></dd>
+                                <dd>5</dd>
+                                <dd>4</dd>
+                                <dd>7</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <!-- 서브 내용 끝 -->
+                </div>
+                <!-- /.patternControl_win -->
+
+            </div>
+            <!-- /.bettingControl -->
+        </div>
+        <!-- //#board -->
+
+    </div>
+</div>
+
+<script>
+    var g_main;
+    window.onload = function() {
+        g_main = this;
+        this.mainUrl = "http://localhost";
+//        this.mainUrl = "http://ec2-13-124-60-97.ap-northeast-2.compute.amazonaws.com";
+        console.log(this.mainUrl);
+
+        var gameItem = {
+            gameRuleSelected: 0,
+            subTab : "subtabs_nav",
+            bettingPrice : "bettingchips_ul",
+            bettingChoice : ["eh_choice02", "eh_choice03", "eh_choice04" , "eh_choice05"],
+            betPlay: "btn_bet",
+            credit_price: "credit_price",
+            betHistoryItems : []
+        };
+        fnAjaxGameRate(function(_m){
+
+            betHistoryItems = [
+                {
+                    title: 'EVEN&#47;HOLE',
+                    circle: 'circle_blue',
+                    price: 0,
+                    bettingRate: _m.msg[0].marketBetRate
+                },
+                {
+                    title: 'S&#47;M&#47;L',
+                    circle: 'circle_blue',
+                    price: 0,
+                    bettingRate: _m.msg[1].marketBetRate
+                },
+                {
+                    title: 'A&#47;B&#47;C&#47;D',
+                    circle: 'circle_blue',
+                    price: 0,
+                    bettingRate: _m.msg[2].marketBetRate
+                },
+                {
+                    title: 'POWERBALL',
+                    circle: 'circle_blue',
+                    price: 0,
+                    bettingRate: _m.msg[3].marketBetRate
+                },
+                {
+                    title: 'PARLAY',
+                    circle: 'circle_blue',
+                    price: 0,
+                    bettingRate: _m.msg[4].marketBetRate
+                },
+            ];
+            gameItem.betHistoryItems = betHistoryItems;
+            g_main.bet = new Bet(gameItem, this.mainUrl);
+        });
+    };
+</script>
+<script src="betting.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿body {
+	margin:0 auto;
+    background-color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+
+#wrap {
+	width:100%;
+	padding:20px;
+}
+
+#gamebox {
+	margin: 0 auto;
+	width:830px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1), 0 6px 20px 0 rgba(0, 0, 0, 1);
+
+}
+#content {
+	height:560px;
+}
+
